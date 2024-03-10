@@ -1,0 +1,39 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: orders
+  labels:
+    app: orders
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: orders
+  template:
+    metadata:
+      labels:
+        app: orders
+    spec:
+      containers:
+        - name: orders
+          #image: raelga/guestbook:v1
+          image: tamotito/node_inventory_ui:v1
+          imagePullPolicy: Always
+          ports:
+            - name: http-server
+              containerPort: 3000
+          resources:
+            limits:
+              memory: 512M
+              cpu: 250m
+            requests:
+              memory: 512M
+              cpu: 250m
+
+
